@@ -1,0 +1,1401 @@
+﻿{
+  "name": "AI Posts Content Machine",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=### MISSION BRIEFING\nTopic for Analysis: {{ $json.body.idea }}\nSpecific CTA to include: {{ $json.body.context.cta }}\nTone Alignment: {{ $json.body.context.tone }}\n\n### EXECUTION PROTOCOL\n1. **INTELLIGENCE GATHERING:** Use the search tool to find credible 2026 reports or news items related to the topic. Specifically look for regional impact in the MENA market (KSA, UAE, Egypt).\n2. **METRIC EXTRACTION:** Identify at least TWO \"CEO-level\" numbers (e.g., % reduction in OpEx, $ increase in market valuation, or hours saved in Go-To-Market).\n3. **STRATEGIC DRAFTING (ARABIC):** \n   - Apply the **\"Pattern Interrupt\"** rule: Start with a statement that challenges the status quo.\n   - Use **\"Modern Business Arabic\"**: Professional, direct, and elite. No \"bot\" greetings.\n   - Focus on **\"Leadership & ROI\"**: Never explain *how* the technology works; explain *why* it is a strategic necessity for the board.\n   - Apply **\"Whitespace\"**: Double space between every 1-2 sentences.\n4. **IMAGE CONCEPTUALIZATION:** Create an image prompt that matches the \"Morafiqy\" aesthetic (Deep Tech Blue/Teal) and a concise headline for the graphic.\n\n### FINAL OUTPUT REQUIREMENTS\nProduce the final result in the JSON format:\nname: Internal English name.\nidea: Strategic angle of the post (1-2 sentences).\ntitle: A powerful Arabic hook for executives.\ntext: The full post in Arabic (200-300 words) using a \"Hook, Insight, Value, CTA\" structure.\nimage: Minimalist description for AI image generation (Deep Tech Blue #0E2A47 / Morafiqy Teal #15847B) as well as the text that should be on the image.\nreferences: An array of URLs used for research.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=**ROLE:**\nYou are a Senior AI Strategy Consultant and Executive Ghostwriter for \"مرافقي\" (Morafiqy). Your audience consists of CEOs, Board Members, and Government Leaders in the MENA region (KSA, UAE, Egypt, Qatar). You do not \"report news\"; you \"analyze impact.\"\n\n**EXECUTIVE CONTENT PROTOCOL:**\n1. **The \"Bottom Line\" Hook:** Your first line must address a business outcome (Revenue, Efficiency, Risk, or Market Share). Never start with a greeting or fluff.\n2. **The \"Decision-Maker\" Tone:** Use \"White Arabic\" (اللغة البيضاء)—a sophisticated, modern business Arabic used in GCC boardrooms. It is professional, concise, and avoids overly poetic or archaic Fusha.\n3. **Strategic Funnel:** \n    - **Hook:** A high-stakes statement.\n    - **Context:** The 2026 tech shift.\n    - **The \"So What?\":** Why this matters to a CEO’s P&L (Profit and Loss).\n    - **Actionable Insight:** One specific move they should make today.\n4. **Visual Scannability:** Use a maximum of 2 sentences per paragraph. Use bullet points for \"Executive Summaries.\"\n\n\n\nIMAGE BRANDING RULES:\n\nColors: Background: Deep Tech Blue (#0E2A47). Accents: Morafiqy Teal (#15847B).\n\nStyle: \"Augmented Intelligence\" (Human elements + geometric tech overlays).\n\nFont: Montserrat Bold.\n\nVibe: Minimalist, clean, and prestigious. No \"robot\" cliches.\n\nJSON OUTPUT STRUCTURE:\nname: Internal English name.\nidea: Strategic angle of the post (1-2 sentences).\ntitle: A powerful Arabic hook for executives.\ntext: The full post in Arabic (200-300 words) using a \"Hook, Insight, Value, CTA\" structure.\nimage: Minimalist description for AI image generation (Deep Tech Blue #0E2A47 / Morafiqy Teal #15847B) as well as the text that should be on the image.\nreferences: An array of URLs used for research."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        320,
+        -528
+      ],
+      "id": "f259e039-1009-4091-970c-9ea126955f31",
+      "name": "Idea Generator",
+      "retryOnFail": true,
+      "maxTries": 3
+    },
+    {
+      "parameters": {
+        "content": "# Generate a New Post Idea and All Materials",
+        "height": 480,
+        "width": 1188,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -640
+      ],
+      "typeVersion": 1,
+      "id": "863376a7-838b-4730-b6a7-6dd792756c57",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Generate an Image and Save",
+        "height": 480,
+        "width": 1588,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        736,
+        -640
+      ],
+      "typeVersion": 1,
+      "id": "b8b83064-1431-4a66-87c9-42100886dd3b",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"name\": \"name\",\n    \"idea\": \"idea\",\n    \"title\": \"title\",\n    \"text\": \"text\",\n    \"image\": \"image\",\n    \"references\": \"references\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        -336
+      ],
+      "id": "13916442-0acb-4e90-a4e2-8a236894ab6a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        -432
+      ],
+      "id": "0ba8bb59-d5a3-4899-90b2-096ae07e227c",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        -528
+      ],
+      "id": "3f92b078-3a98-484c-a2c2-1d892b138a68",
+      "name": "Schedule"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "3aa3bd66-e369-499e-a88c-29f297d3f22a",
+      "name": "Pick One"
+    },
+    {
+      "parameters": {
+        "content": "# Auto Posting",
+        "height": 300,
+        "width": 1340,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "e826eec1-2ab7-4c4a-9510-84da6bfd7821",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        160,
+        256
+      ],
+      "id": "1d03faaa-89f2-4cd9-b8a1-6816cda1b073",
+      "name": "X",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8a4260ba-3bde-4444-8f42-8a8abd51ff0c",
+              "name": "ImageURL",
+              "type": "string",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "id": "1953ae03-6a86-4847-8686-5a928637be1d",
+              "name": "Caption",
+              "type": "string",
+              "value": "={{ $('3c. Generate Post Caption (Gemini)').item.json.output.Caption }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a92c0fbb-00fc-4e27-a640-1aa6ce2fe892",
+      "name": "Prepare Data for Instagram API",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        416,
+        256
+      ],
+      "typeVersion": 3.4,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "17841473009917118",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "caption",
+                "value": "={{ $json.Caption }}"
+              },
+              {
+                "name": "image_url",
+                "value": "={{ $json.ImageURL }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "7e57180d-0d2d-4a72-8480-09ff648d235e",
+      "name": "Create Instagram Media Container",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "position": [
+        592,
+        256
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "id": "e6c02b28-8afd-45c9-8b6b-abe594d3c664",
+      "name": "Wait for Container Processing",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        800,
+        256
+      ],
+      "webhookId": "1b14c8bf-151a-4054-8215-093dd5b6cbcc",
+      "typeVersion": 1.1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "17841473009917118",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "27e4f73b-6c4d-4677-8c61-73544fc4be72",
+      "name": "Publish Post to Instagram",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "position": [
+        992,
+        256
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Twitter & Instagram",
+        "height": 260,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "09e60078-9bcf-42f9-9741-9fc5b4e11855",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://your-openai-api-endpoint",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-image-1.5"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "prompt",
+              "value": "=You're a professional graphic designer.\n\nMake a new image in the style very very similar to the reference.\n\nCopy the style, spacing, minimalistic structure, especially copy the FONTS, and everything else.\n\nUse black and dark grainy film (mainly for the background), white and salad green (#cff150).\n\nMake the image super aesthetic and minimalistic.\n\nMake it vertical 3x4.\n\nIt will be an image for a LinkedIn post.\n\nHere is the description of the new image:\n{{ $('Idea Generator').item.json.output.image }}"
+            },
+            {
+              "name": "quality",
+              "value": "medium"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        -432
+      ],
+      "id": "9e532b14-4189-4868-86a5-3180748b3fe3",
+      "name": "OpenAI Image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Idea Generator').item.json.output.name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID",
+          "mode": "list",
+          "cachedResultName": "Ai Posts Content Machine",
+          "cachedResultUrl": "https://your-google-drive-folder-id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1392,
+        -432
+      ],
+      "id": "fdf09d70-219d-4cb6-91e8-9ddb39d2e19c",
+      "name": "Save Image",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_DOC_ID",
+          "mode": "list",
+          "cachedResultName": "AI Posts Content Machine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $('Idea Generator').item.json.output.name }}",
+            "idea": "={{ $('Idea Generator').item.json.output.idea }}",
+            "text": "={{ $('Idea Generator').item.json.output.text }}",
+            "image": "={{ $('Save Image').item.json.webViewLink }}",
+            "status": "review",
+            "reference": "={{ $('Idea Generator').item.json.output.references }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "idea",
+              "displayName": "idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reference",
+              "displayName": "reference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1872,
+        -432
+      ],
+      "id": "ac0d48e0-6d54-44ed-9113-f61ef6ed6b14",
+      "name": "Save Post",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        -32
+      ],
+      "id": "a50c2e0d-5a67-4387-bbcf-973dfc598314",
+      "name": "Schedule 2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_DOC_ID",
+          "mode": "list",
+          "cachedResultName": "AI Posts Content Machine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "ready"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -256,
+        -32
+      ],
+      "id": "69b434c9-ceb6-4b7a-86f9-08b3c6ccc077",
+      "name": "Get Ready Posts",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ $json.image }}",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        144,
+        -32
+      ],
+      "id": "6108bd3f-3aa1-4c1c-98ab-de0ced450612",
+      "name": "Download Image",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_DOC_ID",
+          "mode": "list",
+          "cachedResultName": "AI Posts Content Machine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get Ready Posts').item.json.row_number }}",
+            "status": "posted"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "idea",
+              "displayName": "idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reference",
+              "displayName": "reference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        688,
+        -32
+      ],
+      "id": "3a6cbc45-e06e-4041-bdd1-981b31ca7131",
+      "name": "Update Status",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3-pro-image-preview",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3-pro-image-preview (Nano Banana Pro)"
+        },
+        "prompt": "=You're a professional graphic designer.\n\nMake a new image in the style very very similar to the reference.\n\nCopy the style, spacing, minimalistic structure, especially copy the FONTS, and everything else.\n\nUse black and dark grainy film (mainly for the background), white and salad green (#cff150).\n\nMake the image super aesthetic and minimalistic.\n\nMake it vertical 3x4.\n\nIt will be an image for a LinkedIn post.\n\nHere is the description of the new image:\n{{ $('Idea Generator').item.json.output.image }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        -592
+      ],
+      "id": "14440fdc-fc04-4c22-9c1f-2f2220e7bb6c",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__REDACTED__",
+          "name": "Google Gemini Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        -528
+      ],
+      "id": "fc415296-0b79-420b-b9aa-bf51fcd62c62",
+      "name": "Webhook",
+      "webhookId": "97b37097-e153-4fe6-87ae-0cf2df537870"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "refine",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -416,
+        544
+      ],
+      "id": "8dfeae24-4054-4e04-9b0a-a5ff186eccfd",
+      "name": "refine post",
+      "webhookId": "97b37097-e153-4fe6-87ae-0cf2df537870"
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1616,
+        -432
+      ],
+      "id": "6977d7a6-96fc-4d32-8cd1-abc40a5ed7c3",
+      "name": "Share file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "submit",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        848
+      ],
+      "id": "1ba6be49-91f0-4f47-a22b-dea1c8ace51b",
+      "name": "submit post",
+      "webhookId": "97b37097-e153-4fe6-87ae-0cf2df537870"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ \n  JSON.stringify({\n    post: $json.text || $json.output || \"\", // Adjust based on your AI node's output key\n    image: $json.current_image_url || \"\", // Pass back the existing image so it doesn't disappear\n    title: \"\", // Optional: AI could also refine the title if you add it to the prompt\n    name: \"\",\n    references: []\n  }) \n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        544
+      ],
+      "id": "aa7c7f04-0511-4303-87a4-602562a362ed",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Original Post: {{ $json.body.original_post }}\nRequested Changes: {{ $json.body.text_changes }}",
+        "options": {
+          "systemMessage": "=### Role\nYou are an expert Content Editor and Copywriter. Your goal is to refine an existing social media post based on specific user feedback while maintaining the original core message and professional tone.\n\n### Task\nYou will be provided with the \"Original Post\" and the \"Requested Changes.\" \nYour job is to rewrite the post to incorporate those changes perfectly.\n\n### Constraints\n1. **Preserve Tone:** Unless the user asks to change the tone, keep it consistent with the original.\n2. **Formatting:** Use professional formatting, including clear paragraphs and bullet points if appropriate.\n3. **Language:** Respond in the same language as the \"Original Post\" (e.g., if the post is in Arabic, refine it in Arabic).\n4. **No Meta-Talk:** Do not say \"Here is your refined post\" or \"Sure, I can help with that.\" Return ONLY the final refined text.\n5. **Preserve Keywords:** Ensure technical terms or specific brand names from the original are kept intact unless requested otherwise.\n\n### Input Data Structure\nOriginal Post:  $json.original_post \nRequested Changes:  $json.requested_text_changes "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -16,
+        544
+      ],
+      "id": "8031bf49-1bfa-46c7-bcf1-b85c02b28e23",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        704
+      ],
+      "id": "de91584f-96f7-4a7e-b499-174515816ae5",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__REDACTED__",
+          "name": "Google Gemini Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_DOC_ID",
+          "mode": "list",
+          "cachedResultName": "AI Posts Content Machine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1284023838,
+          "mode": "list",
+          "cachedResultName": "revised posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOC_ID/edit#gid=1284023838"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.body.context.campaign_name }}",
+            "text": "={{ $json.body.content }}",
+            "image": "={{ $json.body.image_url }}",
+            "status": "review",
+            "reference": "=",
+            "target profiles": "={{ $json.body.context.profile }}",
+            "campaign goal": "={{ $json.body.context.campaign_goal }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "campaign goal",
+              "displayName": "campaign goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reference",
+              "displayName": "reference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "target profiles",
+              "displayName": "target profiles",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -112,
+        848
+      ],
+      "id": "1cceb0e7-5c4c-4489-9b0b-ca2444bdc646",
+      "name": "Save Post1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "My Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "discover",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        1120
+      ],
+      "id": "fef9e0c6-0ba9-47b1-85a6-1f45b576358f",
+      "name": "check for trends",
+      "webhookId": "97b37097-e153-4fe6-87ae-0cf2df537870"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Find the latest updates, trends and news about AI",
+        "options": {
+          "systemMessage": "=\"Act as a professional AI Trend Analyst. Use your search tool to identify the most recent breakthroughs, news, and trending topics in Artificial Intelligence as of {{$now}}}. Extract high-impact ideas specifically suited for social media content creation.\n\nOutput Constraints:\n\nThe output must be in Arabic only.\n\nStructure the response as a bulleted list of ideas.\n\nProvide only the topics/ideas themselves.\n\nAvoid any introductions, conclusions, or conversational filler.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        48,
+        1120
+      ],
+      "id": "e07e02a8-826c-486d-8987-128c5bbdb2c4",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        240,
+        1376
+      ],
+      "id": "ada2031d-2a87-4739-a4e0-14ceaf12eca0",
+      "name": "web_search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "__REDACTED__",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ \n  JSON.stringify({\n    topics: Array.isArray($json.output) ? $json.output : ($json.output || $json.text || \"\").split('\\n').filter(line => line.trim() !== \"\"),\n    post: \"\", \n    image: \"\",\n    title: \"AI Trends\"\n  }) \n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        496,
+        1120
+      ],
+      "id": "adfc59d0-08ef-48d8-ada4-6a86ca3c1bb2",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -336
+      ],
+      "id": "cfd84709-d741-4a3f-bdb5-3186c8ad15fe",
+      "name": "web_search1",
+      "credentials": {
+        "tavilyApi": {
+          "id": "__REDACTED__",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ \n  JSON.stringify({\n    name: $json.name || \"AI_Leadership_2026_MENA\",\n    idea: $json.idea || \"Emphasizing that AI is no longer a futuristic concept but a present imperative for MENA executives to secure competitive advantage and drive substantial ROI by 2026.\",\n    title: $json.title || \"قيادة الذكاء الاصطناعي في 2026: استراتيجيات الأرباح والميزة التنافسية\",\n    text: $json.text || \"\", \n    image: $('Save Image').item.json.id ? \"https://lh3.googleusercontent.com/d/\" + $('Save Image').item.json.id : \"Minimalist design with Augmented Intelligence style\",\n    references: $json.references || ($json.reference ? [$json.reference] : [\"https://www2.deloitte.com/us/en/pages/insights/topics/ai-institute/state-of-ai-in-the-enterprise.html\"])\n  }) \n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2064,
+        -288
+      ],
+      "id": "25fb263b-46bb-4a81-8d1c-746a7fdd799e",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "organization": "__REDACTED__",
+        "text": "={{$json.text}}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -32
+      ],
+      "id": "21393691-d15a-424c-bde2-9c7144a31431",
+      "name": "Create a post2",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "__REDACTED__",
+          "name": "LinkedIn Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        176,
+        -320
+      ],
+      "id": "3fc50a0a-87b2-472a-aadb-b0568714569a",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__REDACTED__",
+          "name": "Google Gemini Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -96,
+        1328
+      ],
+      "id": "696c60b1-1c1d-4cd9-9a68-4c9094ff2df4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__REDACTED__",
+          "name": "Google Gemini Account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Idea Generator": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule": {
+      "main": [
+        []
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        []
+      ]
+    },
+    "Pick One": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data for Instagram API": {
+      "main": [
+        [
+          {
+            "node": "Create Instagram Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Instagram Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Container Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Container Processing": {
+      "main": [
+        [
+          {
+            "node": "Publish Post to Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Image": {
+      "main": [
+        []
+      ]
+    },
+    "Save Image": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule 2": {
+      "main": [
+        [
+          {
+            "node": "Get Ready Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Ready Posts": {
+      "main": [
+        [
+          {
+            "node": "Pick One",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Create a post2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Post": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Save Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share file": {
+      "main": [
+        [
+          {
+            "node": "Save Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "refine post": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "submit post": {
+      "main": [
+        [
+          {
+            "node": "Save Post1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check for trends": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "web_search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "web_search1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post2": {
+      "main": [
+        [
+          {
+            "node": "Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Status": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b24ac224-94fc-46f5-8d3e-259b9b29a0da",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "__REDACTED__"
+  },
+  "id": "9jhg0Y3RsN-Q2g854Mx6-",
+  "tags": []
+}
