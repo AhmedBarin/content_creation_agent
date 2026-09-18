@@ -2,7 +2,7 @@
 
 | Field        | Details                          |
 |-------------|----------------------------------|
-| **Date**     | August 2025                      |
+| **Date**     | December 2025                    |
 | **Status**   | ✅ Completed                       |
 | **Role**     | AI Engineer                      |
 | **Tech Stack** | n8n, Google Gemini, OpenAI (GPT-Image-1.5), Tavily Search, LinkedIn API, Instagram Graph API, Google Drive, Google Sheets |
@@ -57,7 +57,7 @@ Morafiqy Content Engine is a headless AI social media content system that automa
 
 ### Screenshots / Demo
 
-> 🎥 Demo video coming soon.
+![n8n Workflow Overview](images/workflow-overview.png)
 
 ## Setup Reference
 
